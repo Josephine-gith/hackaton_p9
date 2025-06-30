@@ -11,7 +11,6 @@ df = df[df["File:"].isin(lis_index)].reset_index(drop=True)
 # Changement d'indexation
 df["File:"] = lis_name
 df.set_index(df["File:"], inplace=True)
-df.drop("File:", axis=1)
-
+df.drop("File:", axis=1, inplace=True)
 
 print(df)
