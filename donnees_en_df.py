@@ -13,4 +13,18 @@ df["File:"] = lis_name
 df.set_index(df["File:"], inplace=True)
 df.drop("File:", axis=1, inplace=True)
 
-print(df)
+#print(df)
+
+df_blanc = df.loc[:, df.loc['Sample'] == 'HNO3 [0.37N]']
+
+df_int = df.loc[:, df.loc['Sample'] == 'InRe-A']
+                
+df_dil_bool = df.loc['Sample'].str.contains('DIL')
+df_dil = df.loc[:, df_dil_bool]
+
+
+df_ech1 = df.drop(columns = df_dil.columns)
+df_ech2 = df_ech1.drop(columns = df_blanc.columns)
+df_ech = df_ech2.drop(columns = df_int.columns)
+
+print(df_ech)
