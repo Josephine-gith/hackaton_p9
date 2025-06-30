@@ -20,7 +20,8 @@ labels = [
 ]
 
 for i, label in enumerate(labels):
-    y = df_dil.loc["115In"][i * 5 : (i + 1) * 5].to_numpy()
+    y = np.array(df_dil.loc["115In"][i * 5 : (i + 1) * 5])
+    y = np.array(y, dtype=float)
     print(y, y.dtype)
     plt.plot(x, y, label=label)
     # Régression linéaire numpy
@@ -30,7 +31,7 @@ for i, label in enumerate(labels):
         x,
         y_fit,
         "--",
-        label=f"Régression {label} (a={coeffs[0]:.2f}, b={coeffs[1]:.2f})",
+        #label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
     )
 
 plt.xlabel("Concentration de In en ppm")
