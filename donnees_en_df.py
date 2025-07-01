@@ -20,7 +20,7 @@ for k,elt in enumerate(df.loc['Sample']):
         i+=1
         j=k
     numérotation.append(i+(k-j)/100)
-print(numérotation)
+#print(numérotation)
 #print(df)
 df.loc['numérotation'] = numérotation
 df_blanc = df.loc[:, df.loc['Sample'] == 'HNO3 [0.37N]']
@@ -35,4 +35,4 @@ df_ech1 = df.drop(columns = df_dil.columns)
 df_ech2 = df_ech1.drop(columns = df_blanc.columns)
 df_ech = df_ech2.drop(columns = df_int.columns)
 
-print(df_dil)
+#print(df_dil)
