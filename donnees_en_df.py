@@ -35,6 +35,15 @@ for k, elt in enumerate(df.loc["Sample"]):
     numérotation_derive.append(i + (k - j) / 100)
 df.loc["numérotation_derive"] = numérotation_derive
 
+i, j = 0, 0
+numérotation_blanc = []
+for k, elt in enumerate(df.loc["Sample"]):
+    if elt == "HNO3 [0.37N]":
+        i += 1
+        j = k
+    numérotation_blanc.append(i + (k - j) / 100)
+df.loc["numérotation_blanc"] = numérotation_blanc
+
 # Création de DataFrame séparés par 'Sample'
 # blancs, standards dilués, InRe (mesure de dérive d'appareil)
 df_blanc = df.loc[:, df.loc["Sample"] == "HNO3 [0.37N]"]
