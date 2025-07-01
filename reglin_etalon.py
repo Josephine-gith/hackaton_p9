@@ -49,9 +49,11 @@ for dil in [100, 30, 10, 3, 0]:
     ) * np.array(temp["Facteur de dilution"])
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
-plt.figure()
+fig, axes = plt.subplots(2, 3, figsize=(12, 8))
+axes = axes.flatten()
 
-for elt in lis_name_clean:
+for idx, elt in enumerate(lis_name_clean):
+    ax = axes[idx]
     dico_elt[elt] = []
 
     atome = "".join([c for c in elt if c.isalpha()])
@@ -61,25 +63,25 @@ for elt in lis_name_clean:
     for i, label in enumerate(labels):
         x = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5])
         x = np.array(x, dtype=float)
-        plt.scatter(x, y, label=label)
+        ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
         dico_elt[elt].append(coeffs)
         y_fit = np.polyval(coeffs, x)
-        plt.plot(
+        ax.plot(
             x,
             y_fit,
             "--",
             # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
         )
 
-    plt.ylabel(f"Concentration de {elt} en ppm")
-    plt.title(f"Etalons pour {elt}")
-    plt.grid()
-    plt.legend()
-    plt.xlabel("Nombre de coût")
-    plt.show()
+    ax.set_title(elt)
+    ax.grid()
+    ax.legend()
+fig.supylabel("Concentration (ppm)")
+fig.supxlabel("Nombre de coût")
+plt.show()
 
 
 ## Régression linéaire pour les éléments In et Re
@@ -88,33 +90,32 @@ for elt in lis_name_clean:
 df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
-plt.figure()
-for elem in [("In", "115In", 1), ("Re", "185Re", 2)]:
+fig, axes = plt.subplots(1, 2, figsize=(12, 8))
+for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
+    ax = axes[idx]
     dico_elt[elem[1]] = []
-
-    plt.subplot(2, 1, elem[2])
 
     y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
 
     for i, label in enumerate(labels):
         x = np.array(df_dil.loc[elem[1]][i * 5 : (i + 1) * 5])
         x = np.array(x, dtype=float)
-        plt.scatter(x, y, label=label)
+        ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
         dico_elt[elem[1]].append(coeffs)
         y_fit = np.polyval(coeffs, x)
-        plt.plot(
+        ax.plot(
             x,
             y_fit,
             "--",
             # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
         )
 
-    plt.ylabel(f"Concentration de {elem[0]} en ppm")
-    plt.title(f"Etalons pour {elem[0]}")
-    plt.grid()
-    plt.legend()
-plt.xlabel("Nombre de coût")
+    ax.set_title(elem[0])
+    ax.grid()
+    ax.legend()
+fig.supylabel("Concentration (ppm)")
+fig.supxlabel("Nombre de coût")
 plt.show()
