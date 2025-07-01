@@ -18,7 +18,7 @@ labels = [
     "5eme mesures",
     "6eme mesures",
 ]
-dico_elt_corblanc = {}
+dico_elt_corblancsensib = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
 
@@ -55,12 +55,12 @@ axes = axes.flatten()
 
 for idx, elt in enumerate(lis_name_clean):
     ax = axes[idx]
-    dico_elt_corblanc[elt] = []
+    dico_elt_corblancsensib[elt] = []
 
     atome = "".join([c for c in elt if c.isalpha()])
     y = df_etalon.loc[atome].iloc[1:].to_numpy()
     y1 = df_InRe["In (ppm)"].iloc[::-1].to_numpy()
-    y = np.array(y/y1, dtype=float)
+    y = np.array(y, dtype=float)
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
@@ -72,12 +72,12 @@ for idx, elt in enumerate(lis_name_clean):
         x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
         x1 = np.array(df_dil.loc['115In'][i * 5 : (i + 1) * 5]- valeur_blancIn)
 
-        x = np.array(x/x1, dtype=float)
+        x = np.array((x/x1)*y1, dtype=float)
         ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
-        dico_elt_corblanc[elt].append(coeffs)
+        dico_elt_corblancsensib[elt].append(coeffs)
         y_fit = np.polyval(coeffs, x)
         ax.plot(
             x,
@@ -89,7 +89,7 @@ for idx, elt in enumerate(lis_name_clean):
     ax.set_title(elt)
     ax.grid()
     ax.legend()
-fig.supylabel("Concentration (ppm)")
+fig.supylabel("Concentration (ppb)")
 fig.supxlabel("Nombre de coût")
 plt.show()
 
@@ -102,7 +102,7 @@ plt.show()
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
 for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
     ax = axes[idx]
-    dico_elt_corblanc[elem[1]] = []
+    dico_elt_corblancsensib[elem[1]] = []
 
     y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
 
@@ -116,7 +116,7 @@ for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
-        dico_elt_corblanc[elem[1]].append(coeffs)
+        dico_elt_corblancsensib[elem[1]].append(coeffs)
         y_fit = np.polyval(coeffs, x)
         ax.plot(
             x,
