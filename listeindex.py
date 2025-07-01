@@ -22,4 +22,4 @@ lis_name = [
     "185Re",
 ]
 
-lis_index_2 = ['Na', 'Mg', 'Ca', 'Sr', 'In', 'Ba', 'Re']
+lis_index_2 = ["Na", "Mg", "Ca ", "Sr", "In", "Ba", "Re"]

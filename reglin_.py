@@ -31,7 +31,7 @@ for i, label in enumerate(labels):
         x,
         y_fit,
         "--",
-        #label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
+        # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
     )
 
 plt.xlabel("Concentration de In en ppm")

@@ -3,14 +3,13 @@ from listeindex import lis_index_2
 import pandas as pd
 import numpy as np
 
-print(df_dil)
 
 xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_2025.xls")
 df_factdil = pd.read_excel(xls, "indication_nom_echts", header=9)
 df_factdil.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
 
 df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
-df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index)].reset_index(drop=True)
+df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].reset_index(drop=True)
 df_etalon.drop(
     [
         "concentration certifiée (ppb)",
