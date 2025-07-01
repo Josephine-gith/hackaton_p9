@@ -16,16 +16,24 @@ df["File:"] = lis_name
 df.set_index(df["File:"], inplace=True)
 df.drop("File:", axis=1, inplace=True)
 
-
 # Numérotation des expériences dans l'ordre chronologique et par groupe
 i, j = 0, 0
-numérotation = []
+numérotation_dilution = []
 for k, elt in enumerate(df.loc["Sample"]):
     if elt == "ET-DIL100-04-A":
         i += 1
         j = k
-    numérotation.append(i + (k - j) / 100)
-df.loc["numérotation"] = numérotation
+    numérotation_dilution.append(i + (k - j) / 100)
+df.loc["numérotation_dilution"] = numérotation_dilution
+
+i, j = 0, 0
+numérotation_derive = []
+for k, elt in enumerate(df.loc["Sample"]):
+    if elt == "InRe-A":
+        i += 1
+        j = k
+    numérotation_derive.append(i + (k - j) / 100)
+df.loc["numérotation_derive"] = numérotation_derive
 
 # Création de DataFrame séparés par 'Sample'
 # blancs, standards dilués, InRe (mesure de dérive d'appareil)
@@ -36,3 +44,4 @@ df_InRe = df.loc[:, df.loc["Sample"] == "InRe-A"]
 df_ech_intermediaire1 = df.drop(columns=df_dil.columns)
 df_ech_intermediaire2 = df_ech_intermediaire1.drop(columns=df_blanc.columns)
 df_ech = df_ech_intermediaire2.drop(columns=df_InRe.columns)
+print(df)
