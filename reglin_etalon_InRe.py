@@ -7,17 +7,18 @@ from donnees_en_df import df_dil
 xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_2025.xls")
 df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
 
-x = df_InRe["In (ppm)"].iloc[::-1].to_numpy()
-print(x, x.dtype, x[0].dtype)
+for elem in ['In', 'Re']:
 
-labels = [
-    "1ere mesures",
-    "2eme mesures",
-    "3eme mesures",
-    "4eme mesures",
-    "5eme mesures",
-    "6eme mesures",
-]
+    x = df_InRe[f"{elem} (ppm)"].iloc[::-1].to_numpy()
+
+    labels = [
+        "1ere mesures",
+        "2eme mesures",
+        "3eme mesures",
+        "4eme mesures",
+        "5eme mesures",
+        "6eme mesures",
+    ]
 
 for i, label in enumerate(labels):
     y = np.array(df_dil.loc["115In"][i * 5 : (i + 1) * 5])

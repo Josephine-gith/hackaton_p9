@@ -1,3 +1,4 @@
+# Liste des éléments de l'étude dans leur écriture originelle
 lis_index = [
     "Sample:",
     "Na / 23 [#3]",
@@ -10,6 +11,7 @@ lis_index = [
     "Re / 185 [#2]",
 ]
 
+# Liste des nouveaux noms à leur donner 
 lis_name = [
     "Sample",
     "23Na",
@@ -21,6 +23,8 @@ lis_name = [
     "138Ba",
     "185Re",
 ]
+
+# Listes des éléments étalons
 lis_name_clean = [
     "23Na",
     "24Mg",
@@ -29,4 +33,4 @@ lis_name_clean = [
     "88Sr",
     "138Ba",
 ]
-lis_index_2 = ["Na", "Mg", "Ca", "Sr",  "Ba"]
+lis_index_2 = ["Na", "Mg", "Ca", "Sr", "Ba"]

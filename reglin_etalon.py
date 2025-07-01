@@ -1,10 +1,10 @@
 from donnees_en_df import df_dil
-from listeindex import lis_index_2,lis_name_clean
+from liste_elements import lis_index_2, lis_name_clean
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-print('a')
+print("a")
 xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
 df_factdil = pd.read_excel(xls, "indication_nom_echts", header=9)
 df_factdil.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
@@ -37,10 +37,10 @@ labels = [
     "5eme mesures",
     "6eme mesures",
 ]
-dico_elt={}
+dico_elt = {}
 for elt in lis_name_clean:
-    coefficients=[]
-    atome=''.join([c for c in elt if c.isalpha()])
+    coefficients = []
+    atome = "".join([c for c in elt if c.isalpha()])
     x = df_etalon.loc[atome].iloc[1:].to_numpy()
     x = np.array(x, dtype=float)
     print(x, x.dtype, x[0].dtype)
@@ -48,11 +48,11 @@ for elt in lis_name_clean:
         y = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5])
         y = np.array(y, dtype=float)
         print(y, y.dtype)
-    # Régression linéaire numpy
+        # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
         coefficients.append(coeffs)
     dico_elt[elt] = coefficients
-    '''y_fit = np.polyval(coeffs, x)
+    """y_fit = np.polyval(coeffs, x)
     plt.plot(
         x,
         y_fit,
@@ -67,5 +67,5 @@ for elt in lis_name_clean:
     plt.legend()
     plt.show()
 
-#print(df_etalon.columns)'''
+#print(df_etalon.columns)"""
 print(dico_elt)

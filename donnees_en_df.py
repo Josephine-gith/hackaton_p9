@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Import des données
-from listeindex import lis_index, lis_name
+from liste_elements import lis_index, lis_name
 
 xls = pd.ExcelFile("data/Fichier_donnees_ICP-MS_projets-Mines_2025.xls")
 df = pd.read_excel(xls, "resultats_bruts_ICP-MS")
