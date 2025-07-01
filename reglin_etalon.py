@@ -68,3 +68,4 @@ for elt in lis_name_clean:
     plt.show()
 
 #print(df_etalon.columns)'''
+print(dico_elt)
