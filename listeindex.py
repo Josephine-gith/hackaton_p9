@@ -29,4 +29,4 @@ lis_name_clean = [
     "88Sr",
     "138Ba",
 ]
-lis_index_2 = ["Na", "Mg", "Ca ", "Sr",  "Ba"]
+lis_index_2 = ["Na", "Mg", "Ca", "Sr",  "Ba"]
