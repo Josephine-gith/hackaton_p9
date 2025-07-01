@@ -21,3 +21,5 @@ lis_name = [
     "138Ba",
     "185Re",
 ]
+
+lis_index_2 = ['Na', 'Mg', 'Ca', 'Sr', 'In', 'Ba', 'Re']
