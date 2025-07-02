@@ -38,46 +38,46 @@ for dil in [100, 30, 10, 3, 0]:
         df_etalon["Concentration étalon (ppb)"][:5]
     ) * np.array(temp["Facteur de dilution"])
 
-fig, axes = plt.subplots(2, 3, figsize=(12, 8))
-axes = axes.flatten()
+
+
+# Graphes 
+
+fig, axes = plt.subplots(1,1)
 
 # On stocke les données pour chaque scatter
 scatter_data = {}
 
-for idx, elt in enumerate(lis_name_clean):
-    ax = axes[idx]
-    dico_elt[elt] = []
+elt = "23Na"
+ax = axes
+dico_elt[elt] = []
 
-    atome = "".join([c for c in elt if c.isalpha()])
-    y = df_etalon.loc[atome].iloc[1:].to_numpy()
-    y = np.array(y, dtype=float)
+atome = "".join([c for c in elt if c.isalpha()])
+y = df_etalon.loc[atome].iloc[1:].to_numpy()
+y = np.array(y, dtype=float)
 
-    all_x = []
-    all_y = []
-    for i, label in enumerate(labels):
-        x = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5], dtype=float)
-        all_x.extend(x)
-        all_y.extend(y)
-        sc = ax.scatter(x, y, label=label, picker=True)
-        # On stocke les coordonnées et l'objet scatter
-        scatter_data[sc] = {
-            "x": list(x),
-            "y": list(y),
-            "ax": ax,
-            "elt": elt,
-            "label": label,
-        }
+i = 0
+label = labels[i]
+x = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5], dtype=float)
+sc = ax.scatter(x, y, label=label, picker=True)
+# On stocke les coordonnées et l'objet scatter
+scatter_data[sc] = {
+    "x": list(x),
+    "y": list(y),
+    "ax": ax,
+    "elt": elt,
+    "label": label,
+}
 
-    # Régression initiale
-    coeffs = np.polyfit(all_x, all_y, 1)
-    dico_elt[elt].append(coeffs)
-    y_fit = np.polyval(coeffs, all_x)
-    (line,) = ax.plot(all_x, y_fit, "--", color="red")
-    scatter_data[ax] = {"line": line, "all_x": all_x, "all_y": all_y, "elt": elt}
+# Régression initiale
+coeffs = np.polyfit(x, y, 1)
+dico_elt[elt].append(coeffs)
+y_fit = np.polyval(coeffs, x)
+(line,) = ax.plot(x, y_fit, "--", color="red")
+scatter_data[ax] = {"line": line, "x": x, "y": y, "elt": elt}
 
-    ax.set_title(elt)
-    ax.grid()
-    ax.legend()
+ax.set_title(elt)
+ax.grid()
+ax.legend()
 
 fig.supylabel("Concentration (ppb)")
 fig.supxlabel("Nombre de coût")
