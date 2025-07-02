@@ -53,4 +53,4 @@ df_InRe = df.loc[:, df.loc["Sample"] == "InRe-A"]
 df_ech_intermediaire1 = df.drop(columns=df_dil.columns)
 df_ech_intermediaire2 = df_ech_intermediaire1.drop(columns=df_blanc.columns)
 df_ech = df_ech_intermediaire2.drop(columns=df_InRe.columns)
-print(df_blanc)
+print(df_ech)
