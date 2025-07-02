@@ -1,13 +1,10 @@
 # Import des modules utiles
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from donnees_en_df import df_dil, df_blanc
-from liste_elements import lis_index_2, lis_name_clean
-
-xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
+from donnees_en_df import df_dil, df_blanc, df_etalon, df_InRe
+from liste_elements import lis_name_clean
 
 # Variables globales
 labels = [
@@ -22,39 +19,13 @@ dico_elt_corblancsensib = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
 
-# Import des données sur les étalons :
-# facteurs de dilution
-df_facteur_dilution = pd.read_excel(xls, "indication_nom_echts", header=9)
-df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
-# concentrations étalons initiales
-df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
-df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
-df_etalon.drop(
-    [
-        "concentration certifiée (ppb)",
-        "Incertitude (±)",
-        "Concentration théorique (ppb)",
-    ],
-    axis=1,
-    inplace=True,
-)
-# Import des concentrations étalons en In et Re
-df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
-# Calcul des concentrations étalons diluées
-for dil in [100, 30, 10, 3, 0]:
-    temp = df_facteur_dilution[
-        df_facteur_dilution["Standard étalon"] == f"ET-DIL{dil}-04-A"
-    ]
-    df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
-        df_etalon["Concentration étalon (ppb)"][:5]
-    ) * np.array(temp["Facteur de dilution"])
-
+# Création des graphes
 fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 axes = axes.flatten()
 
-# On stocke les données pour chaque scatter
 scatter_data = {}
 
+# Boucle pour faire un graphe pour chaque élement
 for idx, elt in enumerate(lis_name_clean):
     ax = axes[idx]
     dico_elt_corblancsensib[elt] = []
@@ -64,8 +35,6 @@ for idx, elt in enumerate(lis_name_clean):
     y1 = df_InRe["In (ppm)"].iloc[::-1].to_numpy()
     y = np.array(y, dtype=float)
 
-    all_x = []
-    all_y = []
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
         indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)
@@ -74,17 +43,21 @@ for idx, elt in enumerate(lis_name_clean):
         x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
         x1 = np.array(df_dil.loc["115In"][i * 5 : (i + 1) * 5] - valeur_blancIn)
         x = np.array((x / x1) * y1, dtype=float)
-        all_x.extend(x)
-        all_y.extend(y)
         sc = ax.scatter(x, y, label=label, picker=True)
-        scatter_data[sc] = {"x": list(x), "y": list(y), "ax": ax, "elt": elt}
+        scatter_data[sc] = {
+            "x": list(x),
+            "y": list(y),
+            "ax": ax,
+            "elt": elt,
+            "label": label,
+        }
 
-    # Régression initiale
-    coeffs = np.polyfit(all_x, all_y, 1)
-    dico_elt_corblancsensib[elt].append(coeffs)
-    y_fit = np.polyval(coeffs, all_x)
-    (line,) = ax.plot(all_x, y_fit, "--", color="red")
-    scatter_data[ax] = {"line": line, "all_x": all_x, "all_y": all_y, "elt": elt}
+        # Régression initiale
+        coeffs = np.polyfit(x, y, 1)
+        dico_elt_corblancsensib[elt].append(coeffs)
+        y_fit = np.polyval(coeffs, x)
+        (line,) = ax.plot(x, y_fit, "--")
+        scatter_data[ax] = {"line": line, "x": x, "y": y, "elt": elt}
 
     ax.set_title(elt)
     ax.grid()
@@ -109,6 +82,7 @@ def onpick(event):
     # Met à jour la régression
     if len(x) > 1:
         coeffs = np.polyfit(x, y, 1)
+        dico_elt_corblancsensib[elt][labels.index(scatter_data[sc]["label"])] = coeffs
         y_fit = np.polyval(coeffs, x)
         line = scatter_data[ax]["line"]
         line.set_data(x, y_fit)

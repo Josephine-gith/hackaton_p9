@@ -53,7 +53,6 @@ for idx, elt in enumerate(lis_name_clean):
     ax.set_title(elt)
     ax.grid()
     ax.legend()
-
 fig.supylabel("Concentration (ppb)")
 fig.supxlabel("Nombre de coût")
 
