@@ -18,7 +18,7 @@ labels = [
     "5eme mesures",
     "6eme mesures",
 ]
-dico_elt_corblanc = {}
+dico_elt_corblancsensib = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
 
@@ -38,7 +38,8 @@ df_etalon.drop(
     axis=1,
     inplace=True,
 )
-
+# Import des concentrations étalons en In et Re
+df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
 # Calcul des concentrations étalons diluées
 for dil in [100, 30, 10, 3, 0]:
     temp = df_facteur_dilution[
@@ -54,25 +55,29 @@ axes = axes.flatten()
 
 for idx, elt in enumerate(lis_name_clean):
     ax = axes[idx]
-    dico_elt_corblanc[elt] = []
+    dico_elt_corblancsensib[elt] = []
 
     atome = "".join([c for c in elt if c.isalpha()])
     y = df_etalon.loc[atome].iloc[1:].to_numpy()
+    y1 = df_InRe["In (ppm)"].iloc[::-1].to_numpy()
     y = np.array(y, dtype=float)
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
         indice_blanc = int(df_dil.loc['numérotation_blanc'][i * 5]-1)
         valeur_blanc = df_blanc.loc[elt][indice_blanc]
-
+        valeur_blancIn = df_blanc.loc['115In'][indice_blanc]
+        # On soustrait la valeur du blanc pour chaque élément
+        # pour obtenir la concentration corrigée
         x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
+        x1 = np.array(df_dil.loc['115In'][i * 5 : (i + 1) * 5]- valeur_blancIn)
 
-        x = np.array(x, dtype=float)
+        x = np.array((x/x1)*y1, dtype=float)
         ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
-        dico_elt_corblanc[elt].append(coeffs)
+        dico_elt_corblancsensib[elt].append(coeffs)
         y_fit = np.polyval(coeffs, x)
         ax.plot(
             x,
@@ -91,14 +96,13 @@ plt.show()
 
 ## Régression linéaire pour les éléments In et Re
 
-# Import des concentrations étalons en In et Re
-df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
+
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
 for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
     ax = axes[idx]
-    dico_elt_corblanc[elem[1]] = []
+    dico_elt_corblancsensib[elem[1]] = []
 
     y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
 
@@ -112,7 +116,7 @@ for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
-        dico_elt_corblanc[elem[1]].append(coeffs)
+        dico_elt_corblancsensib[elem[1]].append(coeffs)
         y_fit = np.polyval(coeffs, x)
         ax.plot(
             x,
