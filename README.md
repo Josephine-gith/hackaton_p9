@@ -1,7 +1,7 @@
 # Développement d’un logiciel de traitement de données de laboratoire
 ## Hackaton 2025 - Mines Paris
 
-Travail effectué, par étape :
+### Travail effectué, par étape :
 
 1. Préliminaire : choix des élements considérés dans l'étude et import des tableaux excel
 
