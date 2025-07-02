@@ -57,14 +57,10 @@ for idx, elt in enumerate(lis_name_clean):
     atome = "".join([c for c in elt if c.isalpha()])
     y = df_etalon.loc[atome].iloc[1:].to_numpy()
     y = np.array(y, dtype=float)
-    print(y)
-    # x = []
+
     for i, label in enumerate(labels):
-        # i = 0
         x = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5], dtype=float)
-        print(x)
         sc = ax.scatter(x, y, label=label, picker=True)
-        # On stocke les coordonnées et l'objet scatter
         scatter_data[sc] = {
             "x": list(x),
             "y": list(y),
@@ -104,7 +100,7 @@ def onpick(event):
     # Met à jour la régression
     if len(x) > 1:
         coeffs = np.polyfit(x, y, 1)
-        dico_elt[elt][0] = coeffs
+        dico_elt[elt][labels.index(scatter_data[sc]["label"])] = coeffs
         y_fit = np.polyval(coeffs, x)
         line = scatter_data[ax]["line"]
         line.set_data(x, y_fit)
