@@ -90,7 +90,7 @@ plt.show()
 df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
-fig, axes = plt.subplots(1, 2, figsize=(12, 8))
+fig, axes = plt.subplots(1, 2, figsize=(8, 4))
 for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
     ax = axes[idx]
     dico_elt[elem[1]] = []
