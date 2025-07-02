@@ -8,8 +8,8 @@ from liste_elements import lis_name
 
 ## Tracé des concentrations dans les blancs et les échantillons InRe au cours des expériences
 
-for sample, df in [('blancs', df_blanc), ('échantillons InRe', df_InRe)]:
-    fig, axes = plt.subplots(2, 1)
+for sample, df in [("blancs", df_blanc), ("échantillons InRe", df_InRe)]:
+    fig, axes = plt.subplots(1, 2, figsize=(8, 4))
     x = df.loc["numérotation_blanc"].to_numpy()
 
     for elem in lis_name[2:]:
@@ -28,17 +28,30 @@ for sample, df in [('blancs', df_blanc), ('échantillons InRe', df_InRe)]:
     fig.legend()
     axes[0].grid()
     axes[1].grid()
-    #plt.show()
 
 ## Tracé des concentrations dans échantillons standards au cours des expériences
 
-fig, axes = plt.subplots(2,3)
+fig, axes = plt.subplots(1,5, figsize=(10, 2))
 axes.flatten()
 
+y = np.zeros([5, 6, len(lis_name[1:])])
+x = np.arange(1, 7)
 
-i = 0
-for e in df_dil.loc["numérotation_dilution"].to_numpy():
-    if e % 1 == i:
-        y.append(df_dil[])
+lis_dil = [0 for _ in range(5)]
+for col in df_dil.columns:
+    dil = round((df_dil[col].loc["numérotation_dilution"] % 1) * 100)
+    num_exp = int(df_dil[col].loc["numérotation_dilution"])
+    y[dil][num_exp - 1] = df_dil[col][1:-3]
+    lis_dil[dil] = df_dil[col].loc["Sample"]
 
-for 
+for i_dil, dil in enumerate(lis_dil):
+    for i_elem in range(len(lis_name[1:])):
+        axes[i_dil].plot(x, y[i_dil, :, i_elem], "+-", label=lis_name[i_elem + 1])
+        axes[i_dil].grid()
+        axes[i_dil].set_xlabel(dil)
+
+
+fig.suptitle("Nombre de coût dans les standards au cours des expériences")
+fig.supylabel("nombre de coût")
+axes[0].legend()
+plt.show()
