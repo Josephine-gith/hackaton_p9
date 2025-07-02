@@ -64,9 +64,9 @@ for idx, elt in enumerate(lis_name_clean):
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
-        indice_blanc = int(df_dil.loc['numérotation_blanc'][i * 5]-1)
-        valeur_blanc = df_blanc.loc[elt][indice_blanc]
-        valeur_blancIn = df_blanc.loc['115In'][indice_blanc]
+        indice_blanc = int(np.array(df_dil.loc['numérotation_blanc'])[i * 5]-1)
+        valeur_blanc = np.array(df_blanc.loc[elt])[indice_blanc]
+        valeur_blancIn = np.array(df_blanc.loc['115In'])[indice_blanc]
         # On soustrait la valeur du blanc pour chaque élément
         # pour obtenir la concentration corrigée
         x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
@@ -108,8 +108,8 @@ for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt[1]]
-        indice_blanc = int(df_dil.loc['numérotation_blanc'][i * 5]-1)
-        valeur_blanc = df_blanc.loc[elt[1]][indice_blanc]
+        indice_blanc = int(np.array(df_dil.loc['numérotation_blanc'])[i * 5]-1)
+        valeur_blanc = np.array(df_blanc.loc[elt[1]])[indice_blanc]
         x = np.array(df_dil.loc[elt[1]][i * 5 : (i + 1) * 5]- valeur_blanc)
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)

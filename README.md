@@ -21,7 +21,7 @@ reglin_etalon.py : crée un dictionnaire avec les paramètres de régression lin
 
 correctionblanc.py : même fonction que reglinetalon mais en tenant compte de la correction à partir du blanc sur le nombre de coups, renvoie donc les paramètres et la régression linéaire corrigée.
 
-correctionblanc+sensib.py : corrige en plus la sensibilité de l'appareil, les paramètres de régression linéaire prendront donc cette correction.
+correctionblancetsensib.py : corrige en plus la sensibilité de l'appareil, les paramètres de régression linéaire prendront donc cette correction.
 
 5. Analyse des échantillons 
 
