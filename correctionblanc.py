@@ -1,13 +1,11 @@
 # Import des modules utiles
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from donnees_en_df import df_dil, df_blanc
-from liste_elements import lis_index_2, lis_name_clean
+from donnees_en_df import df_dil, df_blanc, df_InRe, df_etalon
+from liste_elements import lis_name_clean
 
-xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
 
 # Variables globales
 labels = [
@@ -21,32 +19,6 @@ labels = [
 dico_elt_corblanc = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
-
-# Import des données sur les étalons :
-# facteurs de dilution
-df_facteur_dilution = pd.read_excel(xls, "indication_nom_echts", header=9)
-df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
-# concentrations étalons initiales
-df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
-df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
-df_etalon.drop(
-    [
-        "concentration certifiée (ppb)",
-        "Incertitude (±)",
-        "Concentration théorique (ppb)",
-    ],
-    axis=1,
-    inplace=True,
-)
-
-# Calcul des concentrations étalons diluées
-for dil in [100, 30, 10, 3, 0]:
-    temp = df_facteur_dilution[
-        df_facteur_dilution["Standard étalon"] == f"ET-DIL{dil}-04-A"
-    ]
-    df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
-        df_etalon["Concentration étalon (ppb)"][:5]
-    ) * np.array(temp["Facteur de dilution"])
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
 fig, axes = plt.subplots(2, 3, figsize=(12, 8))
@@ -62,7 +34,7 @@ for idx, elt in enumerate(lis_name_clean):
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
-        indice_blanc = int(np.array(df_dil.loc['numérotation_blanc'])[i * 5]-1)
+        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)
         valeur_blanc = np.array(df_blanc.loc[elt])[indice_blanc]
 
         x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
@@ -91,8 +63,6 @@ plt.show()
 
 ## Régression linéaire pour les éléments In et Re
 
-# Import des concentrations étalons en In et Re
-df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
 fig, axes = plt.subplots(1, 2, figsize=(8, 4))
@@ -104,9 +74,9 @@ for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt[1]]
-        indice_blanc = int(np.array(df_dil.loc['numérotation_blanc'])[i * 5]-1)
+        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)
         valeur_blanc = np.array(df_blanc.loc[elt[1]])[indice_blanc]
-        x = np.array(df_dil.loc[elt[1]][i * 5 : (i + 1) * 5]- valeur_blanc)
+        x = np.array(df_dil.loc[elt[1]][i * 5 : (i + 1) * 5] - valeur_blanc)
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)
 

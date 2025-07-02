@@ -1,13 +1,10 @@
 # Import des modules utiles
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des donnees
-from donnees_en_df import df_dil
-from liste_elements import lis_index_2, lis_name_clean
-
-xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
+from donnees_en_df import df_dil, df_etalon
+from liste_elements import lis_name_clean
 
 # Variables globales
 labels = [
@@ -20,32 +17,9 @@ labels = [
 ]
 dico_elt = {}
 
-# Mise à jour des donnees
-df_facteur_dilution = pd.read_excel(xls, "indication_nom_echts", header=9)
-df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
-df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
-df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
-df_etalon.drop(
-    [
-        "concentration certifiée (ppb)",
-        "Incertitude (±)",
-        "Concentration théorique (ppb)",
-    ],
-    axis=1,
-    inplace=True,
-)
-for dil in [100, 30, 10, 3, 0]:
-    temp = df_facteur_dilution[
-        df_facteur_dilution["Standard étalon"] == f"ET-DIL{dil}-04-A"
-    ]
-    df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
-        df_etalon["Concentration étalon (ppb)"][:5]
-    ) * np.array(temp["Facteur de dilution"])
-
 # Création des graphes
 fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 axes = axes.flatten()
-
 
 scatter_data = {}
 
