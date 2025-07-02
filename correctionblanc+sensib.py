@@ -99,24 +99,24 @@ plt.show()
 
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
-fig, axes = plt.subplots(1, 2, figsize=(12, 8))
-for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
+fig, axes = plt.subplots(1, 2, figsize=(8,4))
+for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
     ax = axes[idx]
-    dico_elt_corblancsensib[elem[1]] = []
+    dico_elt_corblancsensib[elt[1]] = []
 
-    y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
+    y = df_InRe[f"{elt[0]} (ppm)"].iloc[::-1].to_numpy()
 
     for i, label in enumerate(labels):
-        ligne = df_dil.loc[elt]
+        ligne = df_dil.loc[elt[1]]
         indice_blanc = int(df_dil.loc['numérotation_blanc'][i * 5]-1)
-        valeur_blanc = df_blanc.loc[elt][indice_blanc]
-        x = np.array(df_dil.loc[elem[1]][i * 5 : (i + 1) * 5]- valeur_blanc)
+        valeur_blanc = df_blanc.loc[elt[1]][indice_blanc]
+        x = np.array(df_dil.loc[elt[1]][i * 5 : (i + 1) * 5]- valeur_blanc)
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
         coeffs = np.polyfit(x, y, 1)
-        dico_elt_corblancsensib[elem[1]].append(coeffs)
+        dico_elt_corblancsensib[elt[1]].append(coeffs)
         y_fit = np.polyval(coeffs, x)
         ax.plot(
             x,
@@ -125,7 +125,7 @@ for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
             # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
         )
 
-    ax.set_title(elem[0])
+    ax.set_title(elt[0])
     ax.grid()
     ax.legend()
 fig.supylabel("Concentration (ppm)")
