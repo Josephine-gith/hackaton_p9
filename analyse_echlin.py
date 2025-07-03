@@ -2,7 +2,7 @@ from donnees_en_df import df_dil, df_blanc, df_InRe, df_ech
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from correctionblancetsensib import dico_elt_corblancsensib
+from correctionblancsensiblin import dico_elt_corblancsensib
 
 df_concentration = df_ech.copy()
 a=0
@@ -11,7 +11,7 @@ for val in df_concentration.loc['115In']:
     col_name = df_concentration.columns[a]
     i=int(df_ech.loc['numérotation_blanc'].iloc[a]) - 1
     j=df_blanc.columns[i]
-    df_concentration.loc['115In', col_name] = coeffs[0] * (val-df_blanc.loc['115In', j]) + coeffs[1]
+    df_concentration.loc['115In', col_name] = coeffs * (val-df_blanc.loc['115In', j]) 
     a+=1
 for i in range(1, 9):
     elt = df_concentration.index[i]
@@ -37,7 +37,7 @@ for i in range(1, 9):
             nb_coup_corrigesensib = (nb_coup_corrige / (in_ech - in_blanc)) * in_mesure
             print(in_mesure,i,a)
             # Mise à jour de la valeur corrigée
-            df_concentration.iloc[i, a] = coeffs[0] * nb_coup_corrigesensib + coeffs[1]
+            df_concentration.iloc[i, a] = coeffs * nb_coup_corrigesensib
          
     
 print(df_concentration,df_ech)

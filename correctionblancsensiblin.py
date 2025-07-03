@@ -48,12 +48,11 @@ for idx, elt in enumerate(lis_name_clean):
         ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
-        coeffs = np.polyfit(x, y, 1)
+        coeffs = np.mean(y/x)
         dico_elt_corblancsensib[elt].append(coeffs)
-        y_fit = np.polyval(coeffs, x)
         ax.plot(
             x,
-            y_fit,
+            coeffs*x,
             "--",
             # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
         )
@@ -106,10 +105,9 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
         ax.scatter(x, y, label=label)
 
         # Régression linéaire
-        coeffs = np.polyfit(x, y, 1)
+        coeffs = np.mean(y/x)
         dico_elt_corblancsensib[code_elt].append(coeffs)
-        y_fit = np.polyval(coeffs, x)
-        ax.plot(x, y_fit, "--")
+        ax.plot(x, coeffs*x, "--")
 
     ax.set_title(nom_elt)
     ax.grid(True)
