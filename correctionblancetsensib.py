@@ -60,6 +60,7 @@ for idx, elt in enumerate(lis_name_clean):
     atome = "".join([c for c in elt if c.isalpha()])
     y = df_etalon.loc[atome].iloc[1:].to_numpy()
     y1 = df_InRe["In (ppm)"].iloc[::-1].to_numpy()
+    y1 = y1 * 1000  # Conversion de ppm à ppb
     y = np.array(y, dtype=float)
 
     for i, label in enumerate(labels):
@@ -96,16 +97,99 @@ plt.show()
 
 ## Régression linéaire pour les éléments In et Re
 
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+
+# Liste des éléments à traiter
+elements = [("Re", "185Re"), ("In", "115In")]
+
+for idx, (nom_elt, code_elt) in enumerate(elements):
+    ax = axes[idx]
+    dico_elt_corblancsensib[code_elt] = []
+
+    # y = concentration cible (en ppb)
+    y = df_InRe[f"{nom_elt} (ppm)"].iloc[::-1].to_numpy() * 1000
+
+    if code_elt == "185Re":
+        # y1 = concentration en In (pour la correction)
+        y1 = df_InRe["In (ppm)"].iloc[::-1].to_numpy() * 1000
+
+    for i, label in enumerate(labels):
+        # Plage des 5 dilutions
+        i_deb, i_fin = i * 5, (i + 1) * 5
+
+        # Récupération des données de dilution
+        dilution = df_dil.loc[code_elt].iloc[i_deb:i_fin]
+        indice_blanc = int(df_dil.loc['numérotation_blanc'].iloc[i_deb]) - 1
+        valeur_blanc = df_blanc.loc[code_elt].iloc[indice_blanc]
+
+        if code_elt == "185Re":
+            # Correction In
+            valeur_blancIn = df_blanc.loc["115In"].iloc[indice_blanc]
+            x1 = df_dil.loc["115In"].iloc[i_deb:i_fin] - valeur_blancIn
+            x = (dilution - valeur_blanc) / x1 * y1
+        else:
+            # Sans correction In
+            x = dilution - valeur_blanc
+
+        x = x.astype(float)
+        ax.scatter(x, y, label=label)
+
+        # Régression linéaire
+        coeffs = np.polyfit(x, y, 1)
+        dico_elt_corblancsensib[code_elt].append(coeffs)
+        y_fit = np.polyval(coeffs, x)
+        ax.plot(x, y_fit, "--")
+
+    ax.set_title(nom_elt)
+    ax.grid(True)
+    ax.legend()
+
+plt.tight_layout()
+plt.show()
 
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
-fig, axes = plt.subplots(1, 2, figsize=(8,4))
-for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
+'''fig, axes = plt.subplots(1, 2, figsize=(8,4))
+for idx, elt in enumerate([ ("Re", "185Re")]):
     ax = axes[idx]
     dico_elt_corblancsensib[elt[1]] = []
 
     y = df_InRe[f"{elt[0]} (ppm)"].iloc[::-1].to_numpy()
+    y=y*1000 # Conversion de ppm à ppb
+    y1 = df_InRe["In (ppm)"].iloc[::-1].to_numpy()
+    y1 = y1 * 1000  # Conversion de ppm à ppb
 
+    for i, label in enumerate(labels):
+        ligne = df_dil.loc[elt[1]]
+        indice_blanc = int(np.array(df_dil.loc['numérotation_blanc'])[i * 5]-1)
+        valeur_blanc = np.array(df_blanc.loc[elt[1]])[indice_blanc]
+        valeur_blancIn = np.array(df_blanc.loc['115In'])[indice_blanc]
+        x = np.array(df_dil.loc[elt[1]][i * 5 : (i + 1) * 5]- valeur_blanc)
+        x1 = np.array(df_dil.loc['115In'][i * 5 : (i + 1) * 5]- valeur_blancIn)
+        x = np.array((x/x1)*y1, dtype=float)
+        ax.scatter(x, y, label=label)
+
+        # Régression linéaire numpy
+        coeffs = np.polyfit(x, y, 1)
+        dico_elt_corblancsensib[elt[1]].append(coeffs)
+        y_fit = np.polyval(coeffs, x)
+        ax.plot(
+            x,
+            y_fit,
+            "--",
+            # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
+        )
+
+    ax.set_title(elt[0])
+    ax.grid()
+    ax.legend()
+
+for idx, elt in enumerate([("In", "115In")]):
+    ax = axes[idx]
+    dico_elt_corblancsensib[elt[1]] = []
+
+    y = df_InRe[f"{elt[0]} (ppm)"].iloc[::-1].to_numpy()
+    y= y * 1000  # Conversion de ppm à ppb
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt[1]]
         indice_blanc = int(np.array(df_dil.loc['numérotation_blanc'])[i * 5]-1)
@@ -127,7 +211,7 @@ for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
 
     ax.set_title(elt[0])
     ax.grid()
-    ax.legend()
-fig.supylabel("Concentration (ppm)")
+    ax.legend()'''
+fig.supylabel("Concentration (ppb)")
 fig.supxlabel("Nombre de coût")
 plt.show()
