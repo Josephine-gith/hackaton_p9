@@ -3,14 +3,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Import des données
-from donnees_en_df import df_dil, df_blanc, df_InRe
+from donnees_en_df import df_dil, df_blanc, df_derive
 from liste_elements import lis_name
 
 ## Tracé des concentrations dans les blancs et les échantillons InRe au cours des expériences
 
-for sample, df in [("blancs", df_blanc), ("échantillons InRe", df_InRe)]:
+
+for sample, df, numerotation in [
+    ("blancs", df_blanc, "numérotation_blanc"),
+    ("échantillons InRe", df_derive, "numérotation_derive"),
+]:
     fig, axes = plt.subplots(1, 2, figsize=(8, 4))
-    x = df.loc["numérotation_blanc"].to_numpy()
+    x = df.loc[numerotation].to_numpy()
 
     for elem in lis_name[2:]:
         y = df.loc[elem].to_numpy()

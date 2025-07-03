@@ -51,11 +51,11 @@ df.loc["numérotation_blanc"] = numérotation_blanc
 # blancs, standards dilués, InRe (mesure de dérive d'appareil)
 df_blanc = df.loc[:, df.loc["Sample"] == "HNO3 [0.37N]"]
 df_dil = df.loc[:, df.loc["Sample"].str.contains("DIL")]
-df_InRe = df.loc[:, df.loc["Sample"] == "InRe-A"]
+df_derive = df.loc[:, df.loc["Sample"] == "InRe-A"]
 # mesures de l'expérience
 df_ech_intermediaire1 = df.drop(columns=df_dil.columns)
 df_ech_intermediaire2 = df_ech_intermediaire1.drop(columns=df_blanc.columns)
-df_ech = df_ech_intermediaire2.drop(columns=df_InRe.columns)
+df_ech = df_ech_intermediaire2.drop(columns=df_derive.columns)
 
 ## Traitement du document
 
