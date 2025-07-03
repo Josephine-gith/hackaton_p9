@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from donnees_en_df import df_dil, df_blanc, df_etalon, df_InRe
-from liste_elements import lis_name_clean
+from C1_donnees_en_df import df_dil, df_blanc, df_etalon, df_InRe
+from C1_liste_elements import lis_name_clean
 
 # Variables globales
 labels = [

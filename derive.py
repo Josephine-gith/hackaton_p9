@@ -1,7 +1,8 @@
-from donnees_en_df import df_InRe
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+
+from C1_donnees_en_df import df_InRe
 
 print(df_InRe)
 x = np.arange(0, 6, 1)
