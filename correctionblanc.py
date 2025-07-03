@@ -71,7 +71,7 @@ for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
     dico_elt_corblanc[elt[1]] = []
 
     y = df_InRe[f"{elt[0]} (ppm)"].iloc[::-1].to_numpy()
-    y= y * 1000  # Conversion de ppm à ppb
+    y = y * 1000  # Conversion de ppm à ppb
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt[1]]
         indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)

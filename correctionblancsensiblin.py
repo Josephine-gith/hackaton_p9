@@ -48,11 +48,11 @@ for idx, elt in enumerate(lis_name_clean):
         ax.scatter(x, y, label=label)
 
         # Régression linéaire numpy
-        coeffs = np.mean(y/x)
+        coeffs = np.mean(y / x)
         dico_elt_corblancsensib[elt].append(coeffs)
         ax.plot(
             x,
-            coeffs*x,
+            coeffs * x,
             "--",
             # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
         )
@@ -89,7 +89,7 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
 
         # Récupération des données de dilution
         dilution = df_dil.loc[code_elt].iloc[i_deb:i_fin]
-        indice_blanc = int(df_dil.loc['numérotation_blanc'].iloc[i_deb]) - 1
+        indice_blanc = int(df_dil.loc["numérotation_blanc"].iloc[i_deb]) - 1
         valeur_blanc = df_blanc.loc[code_elt].iloc[indice_blanc]
 
         if code_elt == "185Re":
@@ -105,9 +105,9 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
         ax.scatter(x, y, label=label)
 
         # Régression linéaire
-        coeffs = np.mean(y/x)
+        coeffs = np.mean(y / x)
         dico_elt_corblancsensib[code_elt].append(coeffs)
-        ax.plot(x, coeffs*x, "--")
+        ax.plot(x, coeffs * x, "--")
 
     ax.set_title(nom_elt)
     ax.grid(True)
@@ -115,7 +115,6 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
 
 plt.tight_layout()
 plt.show()
-
 
 
 fig.supylabel("Concentration (ppb)")

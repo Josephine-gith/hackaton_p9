@@ -2,8 +2,9 @@ from donnees_en_df import df_InRe
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+
 print(df_InRe)
-x=np.arange(0,6,1)
+x = np.arange(0, 6, 1)
 y1 = df_InRe.loc["115In"].to_numpy()
 y2 = df_InRe.loc["185Re"].to_numpy()
 plt.plot(x, y1, label="115In")

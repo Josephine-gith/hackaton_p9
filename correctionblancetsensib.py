@@ -90,7 +90,7 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
 
         # Récupération des données de dilution
         dilution = df_dil.loc[code_elt].iloc[i_deb:i_fin]
-        indice_blanc = int(df_dil.loc['numérotation_blanc'].iloc[i_deb]) - 1
+        indice_blanc = int(df_dil.loc["numérotation_blanc"].iloc[i_deb]) - 1
         valeur_blanc = df_blanc.loc[code_elt].iloc[indice_blanc]
 
         if code_elt == "185Re":
@@ -117,7 +117,6 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
 
 plt.tight_layout()
 plt.show()
-
 
 
 fig.supylabel("Concentration (ppb)")

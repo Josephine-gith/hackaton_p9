@@ -31,7 +31,7 @@ for sample, df in [("blancs", df_blanc), ("échantillons InRe", df_InRe)]:
 
 ## Tracé des concentrations dans échantillons standards au cours des expériences
 
-fig, axes = plt.subplots(1,5, figsize=(10, 2))
+fig, axes = plt.subplots(1, 5, figsize=(10, 2))
 axes.flatten()
 
 y = np.zeros([5, 6, len(lis_name[1:])])
