@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from donnees_en_df import df_dil
-from liste_elements import lis_index_2, lis_name_clean
+from C1_donnees_en_df import df_dil
+from C1_liste_elements import lis_index_2, lis_name_clean
 
 xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
 

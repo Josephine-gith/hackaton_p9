@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des donnees
-from donnees_en_df import df_dil, df_etalon
-from liste_elements import lis_name_clean
+from C1_donnees_en_df import df_dil, df_etalon
+from C1_liste_elements import lis_name_clean
 
 # Variables globales
 labels = [

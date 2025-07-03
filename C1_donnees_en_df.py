@@ -5,7 +5,7 @@ import numpy as np
 ## Traitement du document avec les mesures faites par l'appareil
 
 # Import des données
-from liste_elements import lis_index, lis_name, lis_index_2
+from C1_liste_elements import lis_index, lis_name, lis_index_2
 
 xls = pd.ExcelFile("data/Fichier_donnees_ICP-MS_projets-Mines_2025.xls")
 df = pd.read_excel(xls, "resultats_bruts_ICP-MS")

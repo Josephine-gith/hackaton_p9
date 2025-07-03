@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Import des données
-from donnees_en_df import df_dil, df_blanc, df_derive
-from liste_elements import lis_name
+from C1_donnees_en_df import df_dil, df_blanc, df_derive
+from C1_liste_elements import lis_name
 
 ## Tracé des concentrations dans les blancs et les échantillons InRe au cours des expériences
 
