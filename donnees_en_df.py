@@ -1,8 +1,11 @@
 # Import de modules utiles
 import pandas as pd
+import numpy as np
+
+## Traitement du document avec les mesures faites par l'appareil
 
 # Import des données
-from liste_elements import lis_index, lis_name
+from liste_elements import lis_index, lis_name, lis_index_2
 
 xls = pd.ExcelFile("data/Fichier_donnees_ICP-MS_projets-Mines_2025.xls")
 df = pd.read_excel(xls, "resultats_bruts_ICP-MS")
@@ -53,3 +56,31 @@ df_InRe = df.loc[:, df.loc["Sample"] == "InRe-A"]
 df_ech_intermediaire1 = df.drop(columns=df_dil.columns)
 df_ech_intermediaire2 = df_ech_intermediaire1.drop(columns=df_blanc.columns)
 df_ech = df_ech_intermediaire2.drop(columns=df_InRe.columns)
+
+## Traitement du document
+
+xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
+
+# Mise en forme des donnees
+df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
+df_facteur_dilution = pd.read_excel(xls, "indication_nom_echts", header=9)
+df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
+df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
+df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
+df_etalon.drop(
+    [
+        "concentration certifiée (ppb)",
+        "Incertitude (±)",
+        "Concentration théorique (ppb)",
+    ],
+    axis=1,
+    inplace=True,
+)
+
+for dil in [100, 30, 10, 3, 0]:
+    temp = df_facteur_dilution[
+        df_facteur_dilution["Standard étalon"] == f"ET-DIL{dil}-04-A"
+    ]
+    df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
+        df_etalon["Concentration étalon (ppb)"][:5]
+    ) * np.array(temp["Facteur de dilution"])

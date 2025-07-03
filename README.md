@@ -1,7 +1,7 @@
 # Développement d’un logiciel de traitement de données de laboratoire
 ## Hackaton 2025 - Mines Paris
 
-Travail effectué, par étape :
+### Travail effectué, par étape :
 
 1. Préliminaire : choix des élements considérés dans l'étude et import des tableaux excel
 
@@ -17,11 +17,15 @@ evol_temp.py : trace l'évolution du nombre de coûts de chaque élément au cou
 
 reglin_etalon.py : crée un dictionnaire avec les paramètres de régression linéraire entre le nombre de coûts et la concentration de chaque étalon, pour chaque élément.  Trace les graphes de ces régressions.
 
+reglin_etalon_interactif.py : comme le code précédent, mais avec la possibilité de cliquer sur un point sur un graphe pour le supprimer. Met à jour le graphe et les coefficients de la régression linéaire, stockées dans dico_elt.
+
 4. Corrections des paramètres de régression linéaire : bruit et sensibilité de l'appareil
 
 correctionblanc.py : même fonction que reglinetalon mais en tenant compte de la correction à partir du blanc sur le nombre de coups, renvoie donc les paramètres et la régression linéaire corrigée.
 
 correctionblancetsensib.py : corrige en plus la sensibilité de l'appareil, les paramètres de régression linéaire prendront donc cette correction.
+
+correctionblancetsensib_interactif.py : comme le code précédent, mais avec la possibilité de cliquer sur un point sur un graphe pour le supprimer. Met à jour le graphe et les coefficients de la régression linéaire, stockées dans dico_elt_corblancsensib.
 
 5. Analyse des échantillons 
 
