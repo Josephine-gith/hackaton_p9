@@ -43,7 +43,9 @@ analyse_ech.py : crée une dataframe contenant les concentrations des éléments
 
 analyse_echlin.py : comme le code précédent, mais avec une régression strictement linéaire (en passant par 0).
 
-analyse_echlin_inc : exporte en plus le fichier excel contenant les incertitudes relatives
+analyse_echlin_inc.py : exporte en plus le fichier excel contenant les incertitudes relatives.
+
+traces_incertitude.py : trace pour un échantillon la concentration de chaque élément, avec la barre d'incertitude.
 
 ## Outils et librairies
 
