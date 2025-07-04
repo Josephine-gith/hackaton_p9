@@ -35,8 +35,7 @@ for sample, df, numerotation in [
 
 ## Tracé des concentrations dans échantillons standards au cours des expériences
 
-fig, axes = plt.subplots(1, 5, figsize=(10, 2))
-axes.flatten()
+fig, axes = plt.subplots(1, 5, figsize=(10, 3))
 
 y = np.zeros([5, 6, len(lis_name[1:])])
 x = np.arange(1, 7)
@@ -54,8 +53,10 @@ for i_dil, dil in enumerate(lis_dil):
         axes[i_dil].grid()
         axes[i_dil].set_xlabel(dil)
 
+handles, labels = axes[0].get_legend_handles_labels()
 
 fig.suptitle("Nombre de coût dans les standards au cours des expériences")
 fig.supylabel("nombre de coût")
-axes[0].legend()
+fig.tight_layout(rect=(0, 0, 0.85, 1))
+plt.legend(handles, labels, loc="center left", bbox_to_anchor=(1, 0.5))
 plt.show()
