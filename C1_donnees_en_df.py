@@ -63,8 +63,10 @@ xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.x
 
 # Mise en forme des donnees
 df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
+
 df_facteur_dilution = pd.read_excel(xls, "indication_nom_echts", header=9)
 df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
+
 df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
 df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
 df_etalon.drop(
@@ -82,5 +84,5 @@ for dil in [100, 30, 10, 3, 0]:
         df_facteur_dilution["Standard étalon"] == f"ET-DIL{dil}-04-A"
     ]
     df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
-        df_etalon["Concentration étalon (ppb)"][:5]
+        df_etalon["Concentration étalon (ppb)"]
     ) * np.array(temp["Facteur de dilution"])

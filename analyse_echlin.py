@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from C1_donnees_en_df import df_dil, df_blanc, df_InRe, df_ech
-from correctionblancsensiblin import dico_elt_corblancsensib
+from C4_correctionblancsensiblin_inter import dico_elt_corblancsensib
 # Copie du dataframe d'échantillons pour modifier les valeurs et y mettre les concentrations
 df_concentration = df_ech.copy()
 a = 0

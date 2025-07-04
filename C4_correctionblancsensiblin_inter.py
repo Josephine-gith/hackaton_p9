@@ -1,5 +1,4 @@
 # Import des modules utiles
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -25,6 +24,8 @@ dico_elt_corblancsensib = {}
 fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 axes = axes.flatten()
 
+scatter_data = {}
+
 for idx, elt in enumerate(lis_name_clean):
     ax = axes[idx]
     dico_elt_corblancsensib[elt] = []
@@ -46,23 +47,56 @@ for idx, elt in enumerate(lis_name_clean):
         x1 = np.array(df_dil.loc["115In"][i * 5 : (i + 1) * 5] - valeur_blancIn)
 
         x = np.array((x / x1) * y1, dtype=float)
-        ax.scatter(x, y, label=label)
+        sc = ax.scatter(x, y, label=label, picker=True)
+        scatter_data[sc] = {
+            "x": list(x),
+            "y": list(y),
+            "ax": ax,
+            "elt": elt,
+            "label": label,
+        }
 
-        # Régression linéaire numpy
+        # Régression linéaire initiale
         coeffs = np.mean(y / x)
         dico_elt_corblancsensib[elt].append(coeffs)
-        ax.plot(
-            x,
-            coeffs * x,
-            "--",
-            # label=f"(a={coeffs[0]:.2e}, b={coeffs[1]:.2e})",
-        )
+        (line,) = ax.plot(x, coeffs * x, "--")
+        scatter_data[ax] = {"line": line, "x": x, "y": y, "elt": elt}
 
     ax.set_title(elt)
     ax.grid()
     ax.legend()
 fig.supylabel("Concentration (ppb)")
 fig.supxlabel("Nombre de coût")
+
+
+def onpick(event):
+    sc = event.artist
+    ind = event.ind[0]
+    data = scatter_data[sc]
+    x, y = data["x"], data["y"]
+    ax = data["ax"]
+    elt = data["elt"]
+
+    # Supprime le point cliqué
+    x.pop(ind)
+    y.pop(ind)
+    sc.set_offsets(np.c_[x, y])
+
+    x, y = np.array(x), np.array(y)
+
+    # Met à jour la régression
+    if len(x) > 1:
+        coeffs = np.mean(y / x)
+        dico_elt_corblancsensib[elt][labels.index(scatter_data[sc]["label"])] = coeffs
+        y_fit = coeffs * x
+        line = scatter_data[ax]["line"]
+        line.set_data(x, y_fit)
+        ax.relim()
+        ax.autoscale_view()
+        fig.canvas.draw_idle()
+
+
+fig.canvas.mpl_connect("pick_event", onpick)
 plt.show()
 
 
@@ -72,6 +106,8 @@ fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
 # Liste des éléments à traiter
 elements = [("Re", "185Re"), ("In", "115In")]
+
+scatter_data = {}
 
 for idx, (nom_elt, code_elt) in enumerate(elements):
     ax = axes[idx]
@@ -103,21 +139,29 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
             x = dilution - valeur_blanc
 
         x = x.astype(float)
-        ax.scatter(x, y, label=label)
+        sc = ax.scatter(x, y, label=label, picker=True)
+        scatter_data[sc] = {
+            "x": list(x),
+            "y": list(y),
+            "ax": ax,
+            "elt": code_elt,
+            "label": label,
+        }
 
         # Régression linéaire
         coeffs = np.mean(y / x)
         dico_elt_corblancsensib[code_elt].append(coeffs)
-        ax.plot(x, coeffs * x, "--")
+        (line,) = ax.plot(x, coeffs * x, "--")
+        scatter_data[ax] = {"line": line, "x": x, "y": y, "elt": code_elt}
 
     ax.set_title(nom_elt)
     ax.grid(True)
     ax.legend()
 
 plt.tight_layout()
-plt.show()
-
 
 fig.supylabel("Concentration (ppb)")
 fig.supxlabel("Nombre de coût")
+
+fig.canvas.mpl_connect("pick_event", onpick)
 plt.show()
