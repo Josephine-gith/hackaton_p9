@@ -1,13 +1,10 @@
 # Import des modules utiles
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from C1_donnees_en_df import df_dil
-from C1_liste_elements import lis_index_2, lis_name_clean
-
-xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
+from C1_donnees_en_df import df_dil, df_InRe, df_etalon, df_facteur_dilution
+from C1_liste_elements import lis_name_clean
 
 # Variables globales
 labels = [
@@ -21,23 +18,6 @@ labels = [
 dico_elt = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
-
-# Import des données sur les étalons :
-# facteurs de dilution
-df_facteur_dilution = pd.read_excel(xls, "indication_nom_echts", header=9)
-df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
-# concentrations étalons initiales
-df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
-df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
-df_etalon.drop(
-    [
-        "concentration certifiée (ppb)",
-        "Incertitude (±)",
-        "Concentration théorique (ppb)",
-    ],
-    axis=1,
-    inplace=True,
-)
 
 # Calcul des concentrations étalons diluées
 for dil in [100, 30, 10, 3, 0]:
@@ -86,11 +66,9 @@ plt.show()
 
 ## Régression linéaire pour les éléments In et Re
 
-# Import des concentrations étalons en In et Re
-df_InRe = pd.read_excel(xls, "solution-sdt_InRe", header=6)
-
 # Régression linéaire et stock des coefficients dans un dictionnaire
 fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+
 for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
     ax = axes[idx]
     dico_elt[elem[1]] = []
