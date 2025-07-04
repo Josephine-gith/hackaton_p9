@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from C1_donnees_en_df import df_dil, df_blanc, df_etalon, df_InRe
 from C1_liste_elements import lis_name_clean
 
-# Variables globales
+# liste des numéros de chaque mesure
 labels = [
     "1ere mesures",
     "2eme mesures",
@@ -16,6 +16,7 @@ labels = [
     "5eme mesures",
     "6eme mesures",
 ]
+# Dictionnaire pour stocker les coefficients de régression linéaire
 dico_elt_corblancsensib = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
