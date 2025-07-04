@@ -33,11 +33,13 @@ correctionblancetsensib.py : corrige en plus la sensibilité de l'appareil. Les 
 
 correctionblancetsensib_interactif.py : comme le code précédent, mais avec la possibilité de cliquer sur un point sur un graphe pour le supprimer. Met à jour le graphe et les coefficients de la régression linéaire, stockées dans dico_elt_corblancsensib.
 
+correctionblancetsensiblin_inter.py : comme le code précédent, mais avec une régression strictement linéaire (en passant par 0).
+
 5. Analyse des échantillons 
 
-analyse_ech.py : crée une dataframe contenant les concentrations des éléments considérés de chaque échantillon et exporte un fichier excel contenant les concentrations
+analyse_ech.py : crée une dataframe contenant les concentrations des éléments considérés de chaque échantillon et exporte un fichier excel contenant les concentrations.
 
-analyse_echlin.py : pareil mais en ayant fait une régression strictement linéaire ( en passant par 0)
+analyse_echlin.py : comme le code précédent, mais avec une régression strictement linéaire (en passant par 0).
 
 ## Outils et librairies
 
