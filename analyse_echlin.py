@@ -4,24 +4,27 @@ import matplotlib.pyplot as plt
 
 from C1_donnees_en_df import df_dil, df_blanc, df_InRe, df_ech
 from correctionblancsensiblin import dico_elt_corblancsensib
-
+# Copie du dataframe d'échantillons pour modifier les valeurs et y mettre les concentrations
 df_concentration = df_ech.copy()
 a = 0
+# Calcul de la concentration de l'indium dans les échantillons en utilisant donc uniquement la correction du blanc
 for val in df_concentration.loc["115In"]:
     coeffs = dico_elt_corblancsensib["115In"][
-        int(np.array(df_ech.loc["numérotation_dilution"])[a]) - 1
+        int(np.array(df_ech.loc["numérotation_dilution"])[a]) - 1   # Choisit le bon coefficient suivant après quel échantillon standardisé l'expérience a été faite
     ]
-    col_name = df_concentration.columns[a]
-    i = int(df_ech.loc["numérotation_blanc"].iloc[a]) - 1
+    col_name = df_concentration.columns[a]   # Nom de la colonne de l'échantillon
+    i = int(df_ech.loc["numérotation_blanc"].iloc[a]) - 1  # Numéro de l'échantillon blanc précédent (pour la correction)
     j = df_blanc.columns[i]
-    df_concentration.loc["115In", col_name] = coeffs * (val - df_blanc.loc["115In", j])
+    df_concentration.loc["115In", col_name] = coeffs * (val - df_blanc.loc["115In", j])   # Insert la concentration d'indium dans la dataframe
     a += 1
+# Correction des autres éléments en fonction de l'indium
 for i in range(1, 9):
-    elt = df_concentration.index[i]
-    ligne_concentration = df_concentration.iloc[i]
-    ligne_blanc = df_blanc.loc[elt]
-    nom_ligne = df_concentration.index[i]
-    if nom_ligne != "115In":
+    elt = df_concentration.index[i] # Nom de l'élément
+    ligne_concentration = df_concentration.iloc[i] # Ligne de l'élément dans la dataframe
+    ligne_blanc = df_blanc.loc[elt] # Ligne de l'élément dans la dataframe des blancs
+    nom_ligne = df_concentration.index[i] # Nom de la ligne de l'élément dans la dataframe
+    # On ne corrige pas l'indium, il a déjà été corrigé
+    if nom_ligne != "115In": 
         for a, val in enumerate(ligne_concentration):
             # Obtenir les indices de dilution et de blanc à utiliser
             indice_dilution = int(df_ech.loc["numérotation_dilution"].iloc[a]) - 1
@@ -42,17 +45,7 @@ for i in range(1, 9):
             # Mise à jour de la valeur corrigée
             df_concentration.iloc[i, a] = coeffs * nb_coup_corrigesensib
 
+# Affichage de la dataframe des concentrations corrigées
+print(df_concentration)
 
-print(df_concentration, df_ech)
 
-"""for i in range(1,len(df_concentration)):
-    a=0
-    for val in df_concentration.iloc[i]:
-
-        coeffs = dico_elt_corblancsensib[df_concentration.index[i]][int(np.array(df_ech.loc['numérotation_dilution'])[a]) - 1]
-
-        nb_coup_corrige= df_concentration.iloc[i]-np.array(df_blanc.loc[df_concentration.index[i]])[int(np.array(df_ech.loc['numérotation_blanc'])[a]) - 1]
-        nb_coup_corrigesensib = (nb_coup_corrige / (np.array(df_ech.loc['115In'])[a]-np.array(df_blanc.loc['115In'])[int(np.array(df_ech.loc['numérotation_blanc'])[a]) - 1]))* np.array(df_concentration.loc['115In'])[a]
-        df_concentration.iloc[i, a] = coeffs[0] * nb_coup_corrigesensib + coeffs[1]
-        a+=1
-        print(a)"""
