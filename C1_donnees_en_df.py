@@ -73,7 +73,7 @@ df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
 # concentrations dans les échantillons standards
 # dataframe des concentrations initiales (non-diluées)
 df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
-df_etalon['Elément'] = df_etalon['Elément'].str.strip().str.replace(" ", "")
+df_etalon["Elément"] = df_etalon["Elément"].str.strip().str.replace(" ", "")
 df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
 
 df_etalon.drop(
