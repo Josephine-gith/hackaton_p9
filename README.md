@@ -37,11 +37,15 @@ correctionblancetsensib_interactif.py : comme le code précédent, mais avec la 
 
 correctionblancetsensiblin_inter.py : comme le code précédent, mais avec une régression strictement linéaire (en passant par 0).
 
+correctioninc.py : comme le code précédent mais en rajoutant les calculs d'incertitude.
+
 5. Analyse des échantillons 
 
 analyse_ech.py : crée une dataframe contenant les concentrations des éléments considérés de chaque échantillon et exporte un fichier excel contenant les concentrations.
 
 analyse_echlin.py : comme le code précédent, mais avec une régression strictement linéaire (en passant par 0).
+
+analyse_echlin_inc : exporte en plus le fichier excel contenant les incertitudes relatives
 
 ## Outils et librairies
 
