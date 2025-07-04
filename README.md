@@ -35,7 +35,9 @@ correctionblancetsensib_interactif.py : comme le code précédent, mais avec la 
 
 5. Analyse des échantillons 
 
-analyse_ech.py : crée une dataframe contenant les concentrations des éléments considérés de chaque échantillon
+analyse_ech.py : crée une dataframe contenant les concentrations des éléments considérés de chaque échantillon et exporte un fichier excel contenant les concentrations
+
+analyse_echlin.py : pareil mais en ayant fait une régression strictement linéaire ( en passant par 0)
 
 ## Outils et librairies
 

@@ -84,3 +84,4 @@ for dil in [100, 30, 10, 3, 0]:
     df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
         df_etalon["Concentration étalon (ppb)"][:5]
     ) * np.array(temp["Facteur de dilution"])
+
