@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from C1_donnees_en_df import df_dil, df_blanc, df_etalon, df_InRe
+from C1_donnees_en_df import df_dil, df_blanc, df_etalon, df_InRe, liste_dil
 from C1_liste_elements import lis_name_clean
 
 # liste des numéros de chaque mesure
@@ -38,13 +38,13 @@ for idx, elt in enumerate(lis_name_clean):
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
-        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)
+        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * len(liste_dil)] - 1)
         valeur_blanc = np.array(df_blanc.loc[elt])[indice_blanc]
         valeur_blancIn = np.array(df_blanc.loc["115In"])[indice_blanc]
         # On soustrait la valeur du blanc pour chaque élément
         # pour obtenir la concentration corrigée
-        x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
-        x1 = np.array(df_dil.loc["115In"][i * 5 : (i + 1) * 5] - valeur_blancIn)
+        x = np.array(ligne[i * len(liste_dil) : (i + 1) * len(liste_dil)] - valeur_blanc)
+        x1 = np.array(df_dil.loc["115In"][i * len(liste_dil) : (i + 1) * len(liste_dil)] - valeur_blancIn)
 
         x = np.array((x / x1) * y1, dtype=float)
         sc = ax.scatter(x, y, label=label, picker=True)
@@ -122,7 +122,7 @@ for idx, (nom_elt, code_elt) in enumerate(elements):
 
     for i, label in enumerate(labels):
         # Plage des 5 dilutions
-        i_deb, i_fin = i * 5, (i + 1) * 5
+        i_deb, i_fin = i * len(liste_dil), (i + 1) * len(liste_dil)
 
         # Récupération des données de dilution
         dilution = df_dil.loc[code_elt].iloc[i_deb:i_fin]

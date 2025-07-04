@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des donnees
-from C1_donnees_en_df import df_dil, df_etalon, df_InRe
+from C1_donnees_en_df import df_dil, df_etalon, df_InRe, liste_dil
 from C1_liste_elements import lis_name_clean
 
 # Variables globales
@@ -33,7 +33,7 @@ for idx, elt in enumerate(lis_name_clean):
     y = np.array(y, dtype=float)
 
     for i, label in enumerate(labels):
-        x = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5], dtype=float)
+        x = np.array(df_dil.loc[elt][i * len(liste_dil) : (i + 1) * len(liste_dil)], dtype=float)
         sc = ax.scatter(x, y, label=label, picker=True)
         scatter_data[sc] = {
             "x": list(x),
@@ -102,7 +102,7 @@ for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
     y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
 
     for i, label in enumerate(labels):
-        x = np.array(df_dil.loc[elem[1]][i * 5 : (i + 1) * 5])
+        x = np.array(df_dil.loc[elem[1]][i * len(liste_dil) : (i + 1) * len(liste_dil)])
         x = np.array(x, dtype=float)
         sc = ax.scatter(x, y, label=label, picker=True)
         scatter_data[sc] = {

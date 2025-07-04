@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Import des données
-from C1_donnees_en_df import df_dil, df_blanc, df_derive
+from C1_donnees_en_df import df_dil, df_blanc, df_derive, liste_dil
 from C1_liste_elements import lis_name
 
 ## Tracé des concentrations dans les blancs et les échantillons InRe au cours des expériences
@@ -35,12 +35,12 @@ for sample, df, numerotation in [
 
 ## Tracé des concentrations dans échantillons standards au cours des expériences
 
-fig, axes = plt.subplots(1, 5, figsize=(10, 3))
+fig, axes = plt.subplots(1, len(liste_dil), figsize=(10, 3))
 
-y = np.zeros([5, 6, len(lis_name[1:])])
+y = np.zeros([len(liste_dil), 6, len(lis_name[1:])])
 x = np.arange(1, 7)
 
-lis_dil = [0 for _ in range(5)]
+lis_dil = [0 for _ in range(len(liste_dil))]
 for col in df_dil.columns:
     dil = round((df_dil[col].loc["numérotation_dilution"] % 1) * 100)
     num_exp = int(df_dil[col].loc["numérotation_dilution"])

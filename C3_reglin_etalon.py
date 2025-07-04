@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from C1_donnees_en_df import df_dil, df_InRe, df_etalon, df_facteur_dilution
+from C1_donnees_en_df import df_dil, df_InRe, df_etalon, liste_dil
 from C1_liste_elements import lis_name_clean
 
 # Variables globales
@@ -32,7 +32,7 @@ for idx, elt in enumerate(lis_name_clean):
     y = np.array(y, dtype=float)
 
     for i, label in enumerate(labels):
-        x = np.array(df_dil.loc[elt][i * 5 : (i + 1) * 5])
+        x = np.array(df_dil.loc[elt][i * len(liste_dil) : (i + 1) * len(liste_dil)])
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)
 
@@ -67,7 +67,7 @@ for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
     y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
 
     for i, label in enumerate(labels):
-        x = np.array(df_dil.loc[elem[1]][i * 5 : (i + 1) * 5])
+        x = np.array(df_dil.loc[elem[1]][i * len(liste_dil) : (i + 1) * len(liste_dil)])
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)
 

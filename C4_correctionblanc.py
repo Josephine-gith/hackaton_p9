@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des données
-from C1_donnees_en_df import df_dil, df_blanc, df_InRe, df_etalon
+from C1_donnees_en_df import df_dil, df_blanc, df_InRe, df_etalon, liste_dil
 from C1_liste_elements import lis_name_clean
 
 
@@ -34,10 +34,10 @@ for idx, elt in enumerate(lis_name_clean):
 
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt]
-        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)
+        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * len(liste_dil)] - 1)
         valeur_blanc = np.array(df_blanc.loc[elt])[indice_blanc]
 
-        x = np.array(ligne[i * 5 : (i + 1) * 5] - valeur_blanc)
+        x = np.array(ligne[i * len(liste_dil) : (i + 1) * len(liste_dil)] - valeur_blanc)
 
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)
@@ -74,9 +74,9 @@ for idx, elt in enumerate([("In", "115In"), ("Re", "185Re")]):
     y = y * 1000  # Conversion de ppm à ppb
     for i, label in enumerate(labels):
         ligne = df_dil.loc[elt[1]]
-        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * 5] - 1)
+        indice_blanc = int(np.array(df_dil.loc["numérotation_blanc"])[i * len(liste_dil)] - 1)
         valeur_blanc = np.array(df_blanc.loc[elt[1]])[indice_blanc]
-        x = np.array(df_dil.loc[elt[1]][i * 5 : (i + 1) * 5] - valeur_blanc)
+        x = np.array(df_dil.loc[elt[1]][i * len(liste_dil) : (i + 1) * len(liste_dil)] - valeur_blanc)
         x = np.array(x, dtype=float)
         ax.scatter(x, y, label=label)
 
