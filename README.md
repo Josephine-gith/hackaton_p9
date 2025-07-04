@@ -31,9 +31,7 @@ reglin_etalon_interactif.py : comme le code précédent, mais avec la possibilit
 
 correctionblanc.py : même fonction que reglin_etalon mais en tenant compte de la correction à partir du blanc sur le nombre de coups. Renvoie donc les paramètres des régressions linéaires corrigées.
 
-correctionblancetsensib.py : corrige en plus la sensibilité de l'appareil. Les paramètres de régression linéaire prendront donc cette correction supplémentaire.
-
-correctionblancetsensib_interactif.py : comme le code précédent, mais avec la possibilité de cliquer sur un point sur un graphe pour le supprimer. Met à jour le graphe et les coefficients de la régression linéaire, stockées dans dico_elt_corblancsensib.
+correctionblancetsensib_interactif.py : corrige en plus la sensibilité de l'appareil. Les paramètres de régression linéaire prendront donc cette correction supplémentaire. Interactif : possibilité de cliquer sur un point sur un graphe pour le supprimer. Met à jour le graphe et les coefficients de la régression linéaire, stockées dans dico_elt_corblancsensib.
 
 correctionblancetsensiblin_inter.py : comme le code précédent, mais avec une régression strictement linéaire (en passant par 0).
 
