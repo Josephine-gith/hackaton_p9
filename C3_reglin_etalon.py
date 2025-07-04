@@ -19,15 +19,6 @@ dico_elt = {}
 
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
 
-# Calcul des concentrations étalons diluées
-for dil in [100, 30, 10, 3, 0]:
-    temp = df_facteur_dilution[
-        df_facteur_dilution["Standard étalon"] == f"ET-DIL{dil}-04-A"
-    ]
-    df_etalon[f"Concentration étalon dilué {dil}"] = np.array(
-        df_etalon["Concentration étalon (ppb)"][:5]
-    ) * np.array(temp["Facteur de dilution"])
-
 # Régression linéaire et stock des coefficients dans un dictionnaire
 fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 axes = axes.flatten()
