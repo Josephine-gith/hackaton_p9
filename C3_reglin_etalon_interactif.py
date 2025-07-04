@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Import des donnees
-from C1_donnees_en_df import df_dil, df_etalon
+from C1_donnees_en_df import df_dil, df_etalon, df_InRe
 from C1_liste_elements import lis_name_clean
 
 # Variables globales
@@ -81,6 +81,50 @@ def onpick(event):
         ax.autoscale_view()
         fig.canvas.draw_idle()
 
+
+fig.canvas.mpl_connect("pick_event", onpick)
+
+plt.show()
+
+
+## Régression linéaire pour les éléments In et Re
+
+
+# Régression linéaire et stock des coefficients dans un dictionnaire
+fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+
+scatter_data = {}
+
+for idx, elem in enumerate([("In", "115In"), ("Re", "185Re")]):
+    ax = axes[idx]
+    dico_elt[elem[1]] = []
+
+    y = df_InRe[f"{elem[0]} (ppm)"].iloc[::-1].to_numpy()
+
+    for i, label in enumerate(labels):
+        x = np.array(df_dil.loc[elem[1]][i * 5 : (i + 1) * 5])
+        x = np.array(x, dtype=float)
+        sc = ax.scatter(x, y, label=label, picker=True)
+        scatter_data[sc] = {
+            "x": list(x),
+            "y": list(y),
+            "ax": ax,
+            "elt": elem[1],
+            "label": label,
+        }
+
+        # Régression linéaire numpy
+        coeffs = np.polyfit(x, y, 1)
+        dico_elt[elem[1]].append(coeffs)
+        y_fit = np.polyval(coeffs, x)
+        (line,) = ax.plot(x, y_fit, "--")
+        scatter_data[ax] = {"line": line, "x": x, "y": y, "elt": elem[1]}
+
+    ax.set_title(elem[0])
+    ax.grid()
+    ax.legend()
+fig.supylabel("Concentration (ppm)")
+fig.supxlabel("Nombre de coût")
 
 fig.canvas.mpl_connect("pick_event", onpick)
 
