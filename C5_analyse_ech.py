@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from C1_donnees_en_df import df_blanc, df_ech
-from C4_correctionblancetsensib import dico_elt_corblancsensib
+from C4_correctionblancetsensib_interactif import dico_elt_corblancsensib
 
 # Copie du dataframe d'échantillons pour modifier les valeurs et y mettre les concentrations
 df_concentration = df_ech.copy()
@@ -18,7 +18,7 @@ for val in df_concentration.loc["115In"]:
     ]
     col_name = df_concentration.columns[a]  # Nom de la colonne de l'échantillon
     i = (
-        int(df_ech.loc["numérotation_blanc"].iloc[a]) - 1
+        int(np.array(df_ech.loc["numérotation_blanc"])[a]) - 1
     )  # Numéro de l'échantillon blanc précédent (pour la correction)
     j = df_blanc.columns[i]  # Nom de la colonne de l'échantillon blanc
     df_concentration.loc["115In", col_name] = (
