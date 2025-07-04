@@ -18,7 +18,7 @@ for val in df_concentration.loc["115In"]:
     ]
     col_name = df_concentration.columns[a]  # Nom de la colonne de l'échantillon
     i = (
-        int(df_ech.loc["numérotation_blanc"].iloc[a]) - 1
+        int(np.array(df_ech.loc["numérotation_blanc"])[a]) - 1
     )  # Numéro de l'échantillon blanc précédent (pour la correction)
     j = df_blanc.columns[i]
     df_concentration.loc["115In", col_name] = coeffs * (
@@ -40,8 +40,8 @@ for i in range(1, 9):
     if nom_ligne != "115In":
         for a, val in enumerate(ligne_concentration):
             # Obtenir les indices de dilution et de blanc à utiliser
-            indice_dilution = int(df_ech.loc["numérotation_dilution"].iloc[a]) - 1
-            indice_blanc = int(df_ech.loc["numérotation_blanc"].iloc[a]) - 1
+            indice_dilution = int(np.array(df_ech.loc["numérotation_dilution"])[a]) - 1
+            indice_blanc = int(np.array(df_ech.loc["numérotation_blanc"])[a]) - 1
 
             # Récupération du coefficient d'étalonnage
             coeffs = dico_elt_corblancsensib[elt][indice_dilution]

@@ -37,8 +37,10 @@ for sample, df, numerotation in [
 
 fig, axes = plt.subplots(1, len(liste_dil), figsize=(10, 3))
 
-y = np.zeros([len(liste_dil), 6, len(lis_name[1:])])
-x = np.arange(1, 7)
+nb_serie_dilution = df_dil.loc['Sample'].value_counts().iloc[0]
+
+y = np.zeros([len(liste_dil), nb_serie_dilution, len(lis_name[1:])])
+x = np.arange(1, nb_serie_dilution+1)
 
 lis_dil = [0 for _ in range(len(liste_dil))]
 for col in df_dil.columns:

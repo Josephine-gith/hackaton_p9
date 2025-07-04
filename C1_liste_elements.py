@@ -11,7 +11,7 @@ lis_index = [
     "Re / 185 [#2]",
 ]
 
-# Liste des nouveaux noms à leur donner 
+# Liste des nouveaux noms à leur donner
 lis_name = [
     "Sample",
     "23Na",

@@ -18,7 +18,8 @@ labels = [
 dico_elt = {}
 
 # Création des graphes
-fig, axes = plt.subplots(2, 3, figsize=(12, 8))
+nb_rows = (len(lis_name_clean)+1)//2
+fig, axes = plt.subplots(2, nb_rows, figsize=(12, 8))
 axes = axes.flatten()
 
 scatter_data = {}

@@ -20,7 +20,8 @@ dico_elt_corblancsensib = {}
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
 
 # Création des graphes
-fig, axes = plt.subplots(2, 3, figsize=(12, 8))
+nb_rows = (len(lis_name_clean)+1)//2
+fig, axes = plt.subplots(2, nb_rows, figsize=(12, 8))
 axes = axes.flatten()
 
 scatter_data = {}

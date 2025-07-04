@@ -21,7 +21,8 @@ dico_elt_corblanc = {}
 ## Régression linéaire pour les éléments Na, Mg, Ca, Sr, Ba (tous sauf In et Re)
 
 # Régression linéaire et stock des coefficients dans un dictionnaire
-fig, axes = plt.subplots(2, 3, figsize=(12, 8))
+nb_rows = (len(lis_name_clean)+1)//2
+fig, axes = plt.subplots(2, nb_rows, figsize=(12, 8))
 axes = axes.flatten()
 
 for idx, elt in enumerate(lis_name_clean):

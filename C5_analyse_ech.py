@@ -40,8 +40,8 @@ for i in range(1, 9):
     if nom_ligne != "115In":  # On ne corrige pas l'indium, il a déjà été corrigé
         for a, val in enumerate(ligne_concentration):
             # Obtenir les indices de dilution et de blanc à utiliser
-            indice_dilution = int(df_ech.loc["numérotation_dilution"].iloc[a]) - 1
-            indice_blanc = int(df_ech.loc["numérotation_blanc"].iloc[a]) - 1
+            indice_dilution = int(np.array(df_ech.loc["numérotation_dilution"])[a]) - 1
+            indice_blanc = int(np.array(df_ech.loc["numérotation_blanc"])[a]) - 1
 
             # Récupération du coefficient d'étalonnage
             coeffs = dico_elt_corblancsensib[elt][indice_dilution]
