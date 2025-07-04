@@ -60,7 +60,7 @@ df_ech = df_ech_intermediaire2.drop(columns=df_derive.columns)
 
 ## Traitement du document avec les informations de traitement de données
 
-xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_20252.xls")
+xls = pd.ExcelFile("data/Fichier_traitement_donnees_ICP-MS_projets-Mines_2025.xls")
 
 # Mise en forme des donnees
 # concentrations de In et Re dans les échantillons standards
@@ -73,7 +73,9 @@ df_facteur_dilution.drop(["Unnamed: 2", "Unnamed: 3"], axis=1, inplace=True)
 # concentrations dans les échantillons standards
 # dataframe des concentrations initiales (non-diluées)
 df_etalon = pd.read_excel(xls, "solution-sdt_etalon", header=1)
+df_etalon['Elément'] = df_etalon['Elément'].str.strip().str.replace(" ", "")
 df_etalon = df_etalon[df_etalon["Elément"].isin(lis_index_2)].set_index("Elément")
+
 df_etalon.drop(
     [
         "concentration certifiée (ppb)",
