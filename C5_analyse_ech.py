@@ -51,4 +51,7 @@ for i in range(1, 9):
 # Affichage de la dataframe des concentrations corrigées
 print(df_concentration)
 
-
+df_concentration.drop(
+    ["numérotation_dilution", "numérotation_blanc", "numérotation_derive"], inplace=True
+)  # Suppression des lignes inutiles
+df_concentration.to_excel("data/concentration_corrigee.xlsx", index=True)
