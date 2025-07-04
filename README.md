@@ -9,6 +9,8 @@ De plus, il faut corriger le bruit des mesures et la sensibilité de l'appareil.
 
 ### Travail effectué, par étape :
 
+Pour chaque étape (exceptée l'étape préliminaire), les codes proposés ci-dessous sont dans l'ordre d'ajout de nouvelles fonctionnalités. Il est donc possible de n'exécuter que le dernier fichier pour obtenir l'information attendue (tracé ou dictionnaire).
+
 1. Préliminaire : choix des élements considérés dans l'étude et import des tableaux excel
 
 listeindex.py : listes des éléments à considérer d'après la consigne, ainsi que le nouveau nom à leur attribuer, et le nom qui leur est donné dans le fichier de concentrations étalons.
