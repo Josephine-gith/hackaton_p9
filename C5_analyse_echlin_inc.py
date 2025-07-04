@@ -18,7 +18,7 @@ for val in df_concentration.loc["115In"]:
         int(np.array(df_ech.loc["numérotation_dilution"])[a])
         - 1  # Choisit le bon coefficient suivant après quel échantillon standardisé l'expérience a été faite
     ]
-    print(coeffs)
+    # print(coeffs)
     col_name = df_concentration.columns[a]  # Nom de la colonne de l'échantillon
     i = (
         int(np.array(df_ech.loc["numérotation_blanc"])[a]) - 1

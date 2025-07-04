@@ -54,7 +54,7 @@ for i in range(1, 9):
             in_blanc = df_blanc.loc["115In"].iloc[indice_blanc]
             in_mesure = df_concentration.loc["115In"].iloc[a]
             nb_coup_corrigesensib = (nb_coup_corrige / (in_ech - in_blanc)) * in_mesure
-            print(in_mesure, i, a)
+            # print(in_mesure, i, a)
             # Mise à jour de la valeur corrigée dans la dataframe
             df_concentration.iloc[i, a] = coeffs[0] * nb_coup_corrigesensib + coeffs[1]
 
